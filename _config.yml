@@ -4,14 +4,11 @@ url: "https://guchizi.ccwu.cc"
 baseurl: ""
 locale: "zh-CN"
 
-# 锁定新版 + 强制Neon皮肤
+# 锁定新版 + 强制 Neon 皮肤（唯一生效写法）
 remote_theme: mmistakes/minimal-mistakes@4.26.2
 minimal_mistakes_skin: neon
 
-# 关键：强制忽略系统，固定深色
-dark_mode_auto: false
-force_dark_mode: true
-
+# 插件
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
@@ -32,3 +29,11 @@ header:
       url: /gallery/
     - title: "碎碎念 / Memos"
       url: /memos/
+
+# 关键！强制全站深色模式，无视系统设置
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"
+      dark_mode: true
