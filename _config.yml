@@ -1,29 +1,36 @@
-# 网站标题
+# 站点基础信息
 title: "guchizi"
-
-# 网站描述（你的专属文案！）
 description: "另一种赛博永生"
-
-# 你的域名
 url: "https://guchizi.ccwu.cc"
-
-# 根目录（留空）
 baseurl: ""
+locale: "zh-CN"
 
-# 使用的主题
+# 主题与深色皮肤配置（关键部分！）
 remote_theme: mmistakes/minimal-mistakes
-
-# 主题皮肤（护眼深色模式）
-skin: neon
+minimal_mistakes_skin: "neon" # 生效的正确写法！
+dark_mode: true # 强制深色模式
+color_theme: dark # 适配深色主题的配色
 
 # 必须开启的插件
 plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
+  - jekyll-feed
   - jekyll-include-cache
 
-# ==============================================
-# Memos 碎碎念功能专用配置
-# 作用：让 GitHub Pages 识别 _memos 文件夹里的内容
-# ==============================================
+# Memos 碎碎念配置
 collections:
   memos:
-    output: true    # 开启 memos 功能（必须开启）
+    output: true
+    permalink: /:collection/:path/
+
+# 导航栏配置（适配深色主题）
+header:
+  nav:
+    - title: "随笔日志 / Blog"
+      url: /posts/
+    - title: "摄影影集 / Gallery"
+      url: /gallery/
+    - title: "碎碎念 / Memos"
+      url: /memos/
