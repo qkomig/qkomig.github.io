@@ -1,11 +1,19 @@
 ---
-title: "guchizi的随笔"
 layout: home
+title: "guchizi"
+description: "另一种赛博永生"
 ---
 
-欢迎来到我的小站～
-这里会放日常拍照和碎碎念。
+# guchizi
 
-[📝 随笔日志 / Blog](/blog.html)
-[📸 摄影影集 / Gallery](/gallery.html)
-[💬 碎碎念 / Memos](/memos.html)
+另一种赛博永生。
+
+---
+
+- 💬 碎碎念 / Memos
+- 📷 影集 / Gallery
+- 📝 文章 / Blog
+
+---
+
+## Recent Posts
