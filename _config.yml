@@ -1,23 +1,26 @@
-# 站点基础
-title: "guchizi"          # 改成你想要的站点名
-description: "摄影与随笔" # 改成你的站点描述
-url: "https://guchizi.ccwu.cc"
-baseurl: ""               # 这里留空，因为你的站点在根目录
+# 网站标题
+title: "guchizi"
 
-# 核心：Minimal Mistakes 主题
+# 网站描述
+description: "摄影与随笔"
+
+# 你的域名
+url: "https://guchizi.ccwu.cc"
+
+# 根目录（留空）
+baseurl: ""
+
+# 使用的主题
 remote_theme: mmistakes/minimal-mistakes
 
-# 开启必要插件
+# 必须开启的插件
 plugins:
   - jekyll-include-cache
 
-# 基础布局配置
-defaults:
-  - scope:
-      path: ""
-    values:
-      layout: single      # 默认用单栏布局，适配博客/摄影
-
-# 导航栏配置（可选，先留空也能跑）
-header:
-  title: "guchizi"
+# ==============================================
+# 下面这段是：Memos 碎碎念功能专用配置
+# 作用：让 GitHub Pages 识别 _memos 文件夹里的内容
+# ==============================================
+collections:
+  memos:
+    output: true    # 开启 memos 功能（必须开启）
