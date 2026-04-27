@@ -1,0 +1,10 @@
+title: guchizi的小站
+author: guchizi
+email: 2583683930@qq.com
+description: >-
+  日常随拍与随笔
+baseurl: ""
+url: "https://guchizi.ccwu.cc"
+
+# 主题
+theme: jekyll-theme-minimal
