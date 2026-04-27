@@ -1,8 +1,8 @@
 # 网站标题
 title: "guchizi"
 
-# 网站描述
-description: "摄影与随笔"
+# 网站描述（你的专属文案！）
+description: "另一种赛博永生"
 
 # 你的域名
 url: "https://guchizi.ccwu.cc"
@@ -13,12 +13,15 @@ baseurl: ""
 # 使用的主题
 remote_theme: mmistakes/minimal-mistakes
 
+# 主题皮肤（护眼深色模式）
+skin: neon
+
 # 必须开启的插件
 plugins:
   - jekyll-include-cache
 
 # ==============================================
-# 下面这段是：Memos 碎碎念功能专用配置
+# Memos 碎碎念功能专用配置
 # 作用：让 GitHub Pages 识别 _memos 文件夹里的内容
 # ==============================================
 collections:
