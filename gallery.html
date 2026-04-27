@@ -1,6 +1,6 @@
 ---
 layout: null
-title: 摄影影集 | Instagram 风格
+title: 摄影影集 | 真实 & 虚幻
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -39,11 +39,30 @@ body {
 
 h1 {
   font-size: 22px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: 500;
 }
 
-/* 封面网格（Instagram 主页样式） */
+/* 分类按钮 */
+.tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.tag-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+.tag-btn.active {
+  background: #000;
+  color: white;
+}
+
+/* 封面网格 */
 .feed {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -63,7 +82,7 @@ h1 {
   object-fit: cover;
 }
 
-/* 弹窗大图轮播 */
+/* 弹窗 */
 .modal {
   display: none;
   position: fixed;
@@ -98,7 +117,6 @@ h1 {
   display: block;
 }
 
-/* 左右切换按钮 */
 .prev, .next {
   position: absolute;
   top: 50%;
@@ -124,7 +142,6 @@ h1 {
   cursor: pointer;
 }
 
-/* 手机适配 */
 @media (max-width:600px) {
   .feed { grid-template-columns: repeat(2,1fr); }
 }
@@ -134,29 +151,19 @@ h1 {
 <body>
 
 <a href="/" class="back-home">← 返回首页</a>
-<h1>摄影影集 / Gallery</h1>
+<h1>摄影影集</h1>
 
-<!-- 封面列表（主页） -->
-<div class="feed" id="feed">
-
-  <!-- ========== 帖子 1 ========== -->
-  <div class="post-item" onclick="openPost(0)">
-    <img src="https://picsum.photos/600/600?random=1" alt="封面">
-  </div>
-
-  <!-- ========== 帖子 2 ========== -->
-  <div class="post-item" onclick="openPost(1)">
-    <img src="https://picsum.photos/600/600?random=2" alt="封面">
-  </div>
-
-  <!-- ========== 帖子 3 ========== -->
-  <div class="post-item" onclick="openPost(2)">
-    <img src="https://picsum.photos/600/600?random=3" alt="封面">
-  </div>
-
+<!-- 分类按钮：真实 / 虚幻 -->
+<div class="tags">
+  <button class="tag-btn active" onclick="filter('all')">全部</button>
+  <button class="tag-btn" onclick="filter('real')">真实</button>
+  <button class="tag-btn" onclick="filter('ai')">虚幻</button>
 </div>
 
-<!-- 弹窗大图（点开展示） -->
+<!-- 封面列表 -->
+<div class="feed" id="feed"></div>
+
+<!-- 弹窗 -->
 <div class="modal" id="modal">
   <div class="close" onclick="closeModal()">&times;</div>
   <button class="prev" onclick="prevImg()">&#10094;</button>
@@ -165,59 +172,93 @@ h1 {
 </div>
 
 <script>
-// ======================
-// 在这里配置你的所有帖子
-// ======================
+// ==============================================
+// 在这里填写你的图集
+// tag: "real" = 真实实拍
+// tag: "ai"   = 虚幻创作
+// ==============================================
 const posts = [
-  // 帖子1：一套图
-  [
-    "https://picsum.photos/1080/1080?random=10",
-    "https://picsum.photos/1080/1080?random=11",
-    "https://picsum.photos/1080/1080?random=12"
-  ],
-  // 帖子2
-  [
-    "https://picsum.photos/1080/1080?random=20",
-    "https://picsum.photos/1080/1080?random=21"
-  ],
-  // 帖子3
-  [
-    "https://picsum.photos/1080/1080?random=30"
-  ]
+  {
+    tag: "real",
+    cover: "https://picsum.photos/600/600?random=1",
+    images: [
+      "https://picsum.photos/1080/1080?random=10",
+      "https://picsum.photos/1080/1080?random=11"
+    ]
+  },
+  {
+    tag: "ai",
+    cover: "https://picsum.photos/600/600?random=2",
+    images: [
+      "https://picsum.photos/1080/1080?random=20",
+      "https://picsum.photos/1080/1080?random=21"
+    ]
+  },
+  {
+    tag: "real",
+    cover: "https://picsum.photos/600/600?random=3",
+    images: [
+      "https://picsum.photos/1080/1080?random=30"
+    ]
+  }
 ];
 
 let currentPostIndex = 0;
 let currentImgIndex = 0;
+let currentTag = "all";
 
-// 打开帖子
-function openPost(postIndex) {
-  currentPostIndex = postIndex;
+window.onload = renderAll();
+
+function renderAll() {
+  const feed = document.getElementById("feed");
+  feed.innerHTML = "";
+  posts.forEach((post, idx) => {
+    const item = document.createElement("div");
+    item.className = "post-item";
+    item.setAttribute("data-tag", post.tag);
+    item.onclick = () => openPost(idx);
+    const img = document.createElement("img");
+    img.src = post.cover;
+    item.appendChild(img);
+    feed.appendChild(item);
+  });
+}
+
+function filter(tag) {
+  currentTag = tag;
+  const items = document.querySelectorAll(".post-item");
+  document.querySelectorAll(".tag-btn").forEach(btn => btn.classList.remove("active"));
+  event.target.classList.add("active");
+  items.forEach(item => {
+    const t = item.getAttribute("data-tag");
+    if (tag === "all" || t === tag) {
+      item.style.display = "block";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
+
+function openPost(idx) {
+  currentPostIndex = idx;
   currentImgIndex = 0;
-  renderModalImages();
-  document.getElementById("modal").classList.add("active");
-}
-
-// 关闭
-function closeModal() {
-  document.getElementById("modal").classList.remove("active");
-}
-
-// 渲染图片
-function renderModalImages() {
   const container = document.getElementById("modalContent");
   container.innerHTML = "";
-  const images = posts[currentPostIndex];
-  
-  images.forEach((src, i) => {
+  const imgs = posts[idx].images;
+  imgs.forEach((src, i) => {
     const img = document.createElement("img");
     img.src = src;
     img.className = "modal-img";
     if (i === 0) img.classList.add("active");
     container.appendChild(img);
   });
+  document.getElementById("modal").classList.add("active");
 }
 
-// 上一张
+function closeModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+
 function prevImg() {
   const imgs = document.querySelectorAll(".modal-img");
   imgs[currentImgIndex].classList.remove("active");
@@ -225,7 +266,6 @@ function prevImg() {
   imgs[currentImgIndex].classList.add("active");
 }
 
-// 下一张
 function nextImg() {
   const imgs = document.querySelectorAll(".modal-img");
   imgs[currentImgIndex].classList.remove("active");
