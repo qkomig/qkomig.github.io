@@ -1,33 +1,238 @@
 ---
 layout: null
-title: 摄影影集
+title: 摄影影集 | Instagram 风格
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>摄影影集 | Gallery</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>摄影影集</title>
 <style>
-body{max-width:900px;margin:30px auto;padding:20px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#fafafa;color:#333;line-height:1.6}
-.back-home{position:fixed;top:20px;left:20px;padding:6px 12px;background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,0.1);text-decoration:none;color:#333;font-size:14px}
-.back-home:hover{background:#f0f0f0}
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}
-.gallery-item img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px}
-h1{font-size:22px;font-weight:500;margin-bottom:20px}
-@media(max-width:600px){.gallery{grid-template-columns:repeat(2,1fr)}}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #fafafa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.back-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  z-index: 100;
+}
+
+h1 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* 封面网格（Instagram 主页样式） */
+.feed {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.post-item {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.post-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 弹窗大图轮播 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.95);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.modal-img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  display: none;
+}
+
+.modal-img.active {
+  display: block;
+}
+
+/* 左右切换按钮 */
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 30px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px;
+  user-select: none;
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+/* 手机适配 */
+@media (max-width:600px) {
+  .feed { grid-template-columns: repeat(2,1fr); }
+}
 </style>
 </head>
+
 <body>
+
 <a href="/" class="back-home">← 返回首页</a>
 <h1>摄影影集 / Gallery</h1>
 
-<div class="gallery">
-  <div class="gallery-item"><img src="https://你的图片1" alt="照片1"></div>
-  <div class="gallery-item"><img src="https://你的图片2" alt="照片2"></div>
-  <div class="gallery-item"><img src="https://你的图片3" alt="照片3"></div>
-  <div class="gallery-item"><img src="https://你的图片4" alt="照片4"></div>
-  <div class="gallery-item"><img src="https://你的图片5" alt="照片5"></div>
-  <div class="gallery-item"><img src="https://你的图片6" alt="照片6"></div>
+<!-- 封面列表（主页） -->
+<div class="feed" id="feed">
+
+  <!-- ========== 帖子 1 ========== -->
+  <div class="post-item" onclick="openPost(0)">
+    <img src="https://picsum.photos/600/600?random=1" alt="封面">
+  </div>
+
+  <!-- ========== 帖子 2 ========== -->
+  <div class="post-item" onclick="openPost(1)">
+    <img src="https://picsum.photos/600/600?random=2" alt="封面">
+  </div>
+
+  <!-- ========== 帖子 3 ========== -->
+  <div class="post-item" onclick="openPost(2)">
+    <img src="https://picsum.photos/600/600?random=3" alt="封面">
+  </div>
+
 </div>
+
+<!-- 弹窗大图（点开展示） -->
+<div class="modal" id="modal">
+  <div class="close" onclick="closeModal()">&times;</div>
+  <button class="prev" onclick="prevImg()">&#10094;</button>
+  <button class="next" onclick="nextImg()">&#10095;</button>
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+// ======================
+// 在这里配置你的所有帖子
+// ======================
+const posts = [
+  // 帖子1：一套图
+  [
+    "https://picsum.photos/1080/1080?random=10",
+    "https://picsum.photos/1080/1080?random=11",
+    "https://picsum.photos/1080/1080?random=12"
+  ],
+  // 帖子2
+  [
+    "https://picsum.photos/1080/1080?random=20",
+    "https://picsum.photos/1080/1080?random=21"
+  ],
+  // 帖子3
+  [
+    "https://picsum.photos/1080/1080?random=30"
+  ]
+];
+
+let currentPostIndex = 0;
+let currentImgIndex = 0;
+
+// 打开帖子
+function openPost(postIndex) {
+  currentPostIndex = postIndex;
+  currentImgIndex = 0;
+  renderModalImages();
+  document.getElementById("modal").classList.add("active");
+}
+
+// 关闭
+function closeModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+
+// 渲染图片
+function renderModalImages() {
+  const container = document.getElementById("modalContent");
+  container.innerHTML = "";
+  const images = posts[currentPostIndex];
+  
+  images.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "modal-img";
+    if (i === 0) img.classList.add("active");
+    container.appendChild(img);
+  });
+}
+
+// 上一张
+function prevImg() {
+  const imgs = document.querySelectorAll(".modal-img");
+  imgs[currentImgIndex].classList.remove("active");
+  currentImgIndex = (currentImgIndex - 1 + imgs.length) % imgs.length;
+  imgs[currentImgIndex].classList.add("active");
+}
+
+// 下一张
+function nextImg() {
+  const imgs = document.querySelectorAll(".modal-img");
+  imgs[currentImgIndex].classList.remove("active");
+  currentImgIndex = (currentImgIndex + 1) % imgs.length;
+  imgs[currentImgIndex].classList.add("active");
+}
+</script>
+
 </body>
 </html>
