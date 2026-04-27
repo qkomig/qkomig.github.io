@@ -1,0 +1,28 @@
+---
+layout: null
+title: 我的碎碎念
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>我的碎碎念 | Memos</title>
+<style>
+body{max-width:700px;margin:30px auto;padding:20px;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#fafafa;color:#333;line-height:1.6}
+.memo{background:white;padding:15px 20px;border-radius:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.time{color:#999;font-size:12px;margin-bottom:5px}
+.content{font-size:15px}
+h1{font-size:22px;font-weight:500;margin-bottom:20px}
+</style>
+</head>
+<body>
+<h1>我的碎碎念 / Memos</h1>
+
+{% for memo in site.memos %}
+<div class="memo">
+<div class="time">{{ memo.date | date: "%Y-%m-%d %H:%M" }}</div>
+<div class="content">{{ memo.content | markdownify }}</div>
+</div>
+{% endfor %}
+</body>
+</html>
