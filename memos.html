@@ -13,9 +13,28 @@ body{max-width:700px;margin:30px auto;padding:20px;font-family:-apple-system,Bli
 .time{color:#999;font-size:12px;margin-bottom:5px}
 .content{font-size:15px}
 h1{font-size:22px;font-weight:500;margin-bottom:20px}
+/* 新增：返回首页按钮样式 */
+.back-home{
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 6px 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+.back-home:hover{
+    background: #f0f0f0;
+}
 </style>
 </head>
 <body>
+<!-- 新增：返回首页按钮 -->
+<a href="/" class="back-home">← 返回首页</a>
+
 <h1>我的碎碎念 / Memos</h1>
 
 {% for memo in site.memos %}
